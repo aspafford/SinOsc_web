@@ -1,14 +1,19 @@
 app.factory('sliders', function() {
   sliders = [
     {
-      name: 'Frequency',
-      param: 'freq',
-      value: 30,
-      min: 20,
-      max: 100
+      synthId: 'playerL',
+      name: 'Volume L',
+      param: 'mul',
+      value: 10,
+      min: 0,
+      max: 100,
+      options: {
+        scale: 'percent'
+      }
     },
     {
-      name: 'Volume',
+      synthId: 'playerR',
+      name: 'VolumeR',
       param: 'mul',
       value: 10,
       min: 0,
@@ -36,7 +41,7 @@ app.controller('SliderCtrl', function($scope, $timeout, noiseSynth, sliders, deb
     }
     // to-do: debounce
     console.log('updating:', slider, value);
-    synth.input("player." + slider.param, Number(value));
+    synth.input(slider.synthId + '.' + slider.param, Number(value));
   }
 });
 

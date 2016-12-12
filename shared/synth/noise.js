@@ -1,21 +1,41 @@
 app.factory('noiseSynth', function() {
 
   var synth = flock.synth({
-    synthDef: {
+    synthDef: [
+    {
+      id: "scopeL",
       ugen: "flock.ugen.scope",
       source: {
-        id: "player",
+        id: "playerL",
         ugen: "flock.ugen.pinkNoise",
         mul: 0.1
       },
       options: {
-        canvas: "#waveform",
+        canvas: "#waveformL",
         styles: {
-          strokeColor: "yellow",
+          strokeColor: "blue",
+          strokeWidth: 4
+        }
+      }
+    },
+    {
+      id: "scopeR",
+      ugen: "flock.ugen.scope",
+      source: {
+        id: "playerR",
+        ugen: "flock.ugen.pinkNoise",
+        mul: 0.1
+      },
+      options: {
+        canvas: "#waveformR",
+        styles: {
+          strokeColor: "red",
           strokeWidth: 4
         }
       }
     }
+    ]
+
   })
 
   return synth;
