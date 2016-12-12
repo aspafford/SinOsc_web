@@ -9,9 +9,14 @@
   <!-- third-party & flocking sources -->
   <script src="./dist/src.js"></script>
   <!-- local -->
+  <script src="./shared/util/init.js"></script>
+  <script src="./shared/util/debounce.js"></script>
+  <script src="./shared/synth/sine.js"></script>
+  <script src="./shared/synth/noise.js"></script>
   <script src="app.js"></script>
 </head>
 <body>
+noise
   <div ng-controller="PlayCtrl">
     <button ng-click="togglePlay()">{{status}}</button>
   </div>
