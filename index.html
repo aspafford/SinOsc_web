@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head>
+  <title>Flocking Demo</title>
+  <meta charset="UTF-8" />
+  <!-- include local jquery, angular -->
+  <script src="./src/jquery.js"></script>
+  <script src="./src/angular.min.js"></script>
+  <!-- third-party & flocking sources -->
+  <script src="./dist/src.js"></script>
+  <!-- local -->
+  <script src="app.js"></script>
+</head>
+<body>
+  <div ng-controller="PlayCtrl">
+    <button ng-click="togglePlay()">{{status}}</button>
+  </div>
+  <div ng-controller="SliderCtrl">
+    <div ng-repeat="slider in sliders">
+      <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}">
+      <span>{{slider.name}}: {{slider.value}}</span>
+    </div>
+  </div>
+  <div class="view">
+    <canvas id="waveform" height="600" width="1350" style="background: #000; "></canvas>
+  </div>
+</body>
+</html>
