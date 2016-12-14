@@ -22,9 +22,9 @@ app.factory('sliders', function() {
   return sliders;
 })
 
-app.controller('SliderCtrl', function($scope, $timeout, noiseSynth, sliders, debounce) {
+app.controller('SliderCtrl', function($scope, $timeout, sineSynth, sliders, debounce) {
 
-  var synth = noiseSynth;
+  var synth = sineSynth;
 
   $scope.sliders = sliders;
 
@@ -40,9 +40,9 @@ app.controller('SliderCtrl', function($scope, $timeout, noiseSynth, sliders, deb
   }
 });
 
-app.controller('PlayCtrl', function($scope, noiseSynth) {
+app.controller('PlayCtrl', function($scope, sineSynth) {
 
-  var synth = noiseSynth;
+  var synth = sineSynth;
   var isPlaying = false;
 
   $scope.status = 'play';
