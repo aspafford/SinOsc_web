@@ -26,7 +26,7 @@ app.controller('SliderCtrl', function($scope, sliders, synthService) {
     }
     // to-do: debounce
     nodes.forEach(function(node, index) {
-      var param = node.synth.inputs.sources.id + '.' + slider.param;
+      var param = node.synth.inputs.sources.mul.id + '.' + slider.param;
       node.flock.input(param, Number(value));
     })
   }
@@ -45,13 +45,17 @@ function NoiseSynth(id, bus, options) {
   this.id = id;
 
   this.synth = {
-    // id: this.id,
     ugen: "flock.ugen.out",
     inputs: {
       sources: {
-        id: this.id,
         ugen: "flock.ugen.pinkNoise",
-        mul: this.options.mul
+        mul: {
+          id: this.id,
+          ugen: "flock.ugen.sinOsc",
+          freq: 1/10,
+          mul: this.options.mul,
+          phase: this.options.phase
+        }
       },
       bus: this.bus,
       expand: 1
@@ -72,6 +76,11 @@ app.controller('PlayCtrl', function($scope, synthService) {
     var options = {};
     var id = "synth" + bus;
     options.mul = 0.1;
+    if (i === 0) {
+      options.phase = 4;
+    } else {
+      options.phase = 0;
+    }
     nodes.push(new NoiseSynth(id, bus, options));
     bus += 1;
   }
