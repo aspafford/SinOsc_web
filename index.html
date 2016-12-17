@@ -12,22 +12,12 @@
   <script src="./shared/util/init.js"></script>
   <script src="./shared/util/debounce.js"></script>
   <script src="./shared/synth/sine.js"></script>
-  <script src="./shared/synth/noise.js"></script>
   <script src="app.js"></script>
 </head>
 <body>
+  <button id="clicker" onclick="clickMe()">click</button>
   <div ng-controller="PlayCtrl">
     <button ng-click="togglePlay()">{{status}}</button>
   </div>
-  <div ng-controller="SliderCtrl">
-    <div ng-repeat="slider in sliders">
-      <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}">
-      <span>{{slider.name}}: {{slider.value}}</span>
-    </div>
-  </div>
-  <div class="view">
-    <canvas id="waveformL" height="250" width="1350" style="background: #000; "></canvas>
-    <canvas id="waveformR" height="250" width="1350" style="background: #000; "></canvas>
-  </div>
-</body>
+  </body>
 </html>

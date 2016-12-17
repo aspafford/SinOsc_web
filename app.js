@@ -1,53 +1,44 @@
-app.factory('sliders', function() {
-  sliders = [
-    {
-      synthId: 'playerL',
-      name: 'Volume L',
-      param: 'mul',
-      value: 10,
-      min: 0,
-      max: 100,
-      options: {
-        scale: 'percent'
-      }
+function NoiseSynth(id, bus) {
+
+  this.bus = bus;
+
+  this.source = "source" + id;
+
+  this.id = id;
+
+  this.synth = {
+    id: this.id,
+    ugen: "flock.ugen.out",
+    inputs: {
+      sources: {
+        id: this.source,
+        ugen: "flock.ugen.pinkNoise",
+        mul: 0.1
+      },
+      bus: this.bus,
+      expand: 1
     },
-    {
-      synthId: 'playerR',
-      name: 'VolumeR',
-      param: 'mul',
-      value: 10,
-      min: 0,
-      max: 100,
-      options: {
-        scale: 'percent'
-      }
-    }
-  ];
-
-  return sliders;
-})
-
-app.controller('SliderCtrl', function($scope, $timeout, noiseSynth, sliders, debounce) {
-
-  var synth = noiseSynth;
-
-  $scope.sliders = sliders;
-
-  $scope.changedSlider = function(slider, value) {
-
-    // scale percentage values
-    if (slider.options && slider.options.scale === 'percent') {
-      value = (value * 0.01).toFixed(2);
-    }
-    // to-do: debounce
-    console.log('updating:', slider, value);
-    synth.input(slider.synthId + '.' + slider.param, Number(value));
   }
-});
 
-app.controller('PlayCtrl', function($scope, noiseSynth) {
+  this.out = { synthDef: this.synth }
 
-  var synth = noiseSynth;
+  this.flock = flock.synth(this.out)
+
+  console.log(this, '<this');
+}
+
+app.controller('PlayCtrl', function($scope) {
+
+  var synths = [];
+
+  var bus = 0;
+
+  for(var i = 0; i < 2; i++) {
+    var id = "synth" + bus;
+    synths.push(new NoiseSynth(id, bus));
+    bus += 1;
+  }
+
   var isPlaying = false;
 
   $scope.status = 'play';
@@ -56,10 +47,12 @@ app.controller('PlayCtrl', function($scope, noiseSynth) {
     isPlaying = !isPlaying;
     if (isPlaying) {
       $scope.status = 'pause'
-      synth.play();
+      synths[0].flock.play();
+      synths[1].flock.play();
     } else {
       $scope.status = 'play'
-      synth.pause();
+      synths[0].flock.pause();
+      synths[1].flock.pause();
     }
   }
 });
