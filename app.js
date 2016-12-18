@@ -5,7 +5,7 @@ app.factory('sliders', function() {
     {
       name: 'Volume',
       param: 'mul',
-      value: 10,
+      value: 1,
       min: 0,
       max: 100,
       options: {
@@ -26,7 +26,7 @@ app.controller('SliderCtrl', function($scope, sliders, synthService) {
     }
     // to-do: debounce
     nodes.forEach(function(node, index) {
-      var param = node.synth.inputs.sources.mul.id + '.' + slider.param;
+      var param = node.synth.inputs.sources.source.mul.id + '.' + slider.param;
       node.flock.input(param, Number(value));
     })
   }
@@ -36,28 +36,25 @@ app.controller('SliderCtrl', function($scope, sliders, synthService) {
 
 function NoiseSynth(id, bus, options) {
 
-  this.options = options;
-
-  this.bus = bus;
-
-  this.source = "source" + bus;
-
-  this.id = id;
-
   this.synth = {
     ugen: "flock.ugen.out",
     inputs: {
       sources: {
-        ugen: "flock.ugen.pinkNoise",
-        mul: {
-          id: this.id,
-          ugen: "flock.ugen.sinOsc",
-          freq: 1/10,
-          mul: this.options.mul,
-          phase: this.options.phase
+        ugen: "flock.ugen.filter.biquad.bp",
+        freq: options.filterFq,
+        q: 0.5,
+        source: {
+          ugen: "flock.ugen.pinkNoise",
+          mul: {
+            id: id,
+            ugen: "flock.ugen.sinOsc",
+            freq: options.amFq,
+            mul: options.mul,
+            phase: options.phase
+          }
         }
       },
-      bus: this.bus,
+      bus: bus,
       expand: 1
     },
   }
@@ -70,19 +67,24 @@ function NoiseSynth(id, bus, options) {
 }
 
 app.controller('PlayCtrl', function($scope, synthService) {
+
   var nodes = synthService.nodes;
+  var numSynths = 12
   var bus = 0;
-  for(var i = 0; i < 2; i++) {
-    var options = {};
-    var id = "synth" + bus;
-    options.mul = 0.1;
-    if (i === 0) {
-      options.phase = 4;
-    } else {
-      options.phase = 0;
-    }
+  for(var i = 1; i <= numSynths; i++) {
+    // var counter = i + 1;
+    var options = {
+      mul: 0.01,
+      phase: (5 % i),
+      filterFq: ((numSynths + 1) - i) * 100,
+      amFq: (1/45) * i
+    };
+
+    var id = "synth" + i;
+    bus = (i % 2 === 0) ? 0 : 1;
+
+    console.log('options:', options);
     nodes.push(new NoiseSynth(id, bus, options));
-    bus += 1;
   }
 
   var isPlaying = false;
