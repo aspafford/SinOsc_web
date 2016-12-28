@@ -15,18 +15,25 @@
     <script src="./shared/util/init.js"></script>
     <script src="./shared/util/debounce.js"></script>
     <script src="./shared/synth/synthService.js"></script>
+    <script src="./shared/localData.js"></script>
     <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div ng-controller="PlayCtrl">
-      <button ng-click="togglePlay()">{{status}}</button>
-    </div>
 
-    <div ng-controller="SliderCtrl">
-      <div ng-repeat="slider in sliders">
-        <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}">
-        <span>{{slider.name}}: {{slider.value}}</span>
+    <div class="container">
+
+      <div ng-controller="PlayCtrl">
+        <button ng-click="togglePlay()" class="play-button">{{status}}</button>
       </div>
+
+      <div ng-controller="SliderCtrl" class="slider-group">
+        <div ng-repeat="slider in sliders">
+          <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}" class="slider">
+          <div>{{slider.name}}: {{slider.value}}</div>
+        </div>
+      </div>
+
     </div>
 
   </body>

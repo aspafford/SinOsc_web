@@ -63,7 +63,7 @@ function NoiseSynth(id, bus, options) {
 
   this.flock = flock.synth(this.out)
 
-  console.log(this, '<this');
+  // console.log(this, '<this');
 }
 
 app.controller('PlayCtrl', function($scope, synthService) {
@@ -88,19 +88,20 @@ app.controller('PlayCtrl', function($scope, synthService) {
   }
 
   var isPlaying = false;
-  $scope.status = 'play';
+  $scope.status = 'Play';
   $scope.togglePlay = function() {
     isPlaying = !isPlaying;
     if (isPlaying) {
-      $scope.status = 'pause'
+      $scope.status = 'Pause'
       nodes.forEach(function(node, index) {
         node.flock.play();
       })
     } else {
-      $scope.status = 'play'
+      $scope.status = 'Play'
       nodes.forEach(function(node, index) {
         node.flock.pause();
       })
     }
   }
+
 });
