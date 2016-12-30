@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- include local jquery, angular -->
     <script src="./src/jquery.js"></script>
+    <script src="./src/jquery-ui.min.js"></script>
     <script src="./src/angular.min.js"></script>
     <!-- third-party & flocking sources -->
     <script src="./dist/src.js"></script>
@@ -28,10 +29,18 @@
       </div>
 
       <div ng-controller="SliderCtrl" class="slider-group">
-        <div ng-repeat="slider in sliders">
+
+<!--         <div ng-repeat="slider in sliders">
           <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}" class="slider">
           <div>{{slider.name}}: {{slider.value}}</div>
         </div>
+ -->
+
+      <div class="slider-container">
+        <div class="vol-container">
+          <div class="vol-slider" draggable></div>
+        </div>
+        <div>vol {{volume}}</div>
       </div>
 
     </div>
