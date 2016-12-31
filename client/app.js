@@ -62,22 +62,22 @@ app.controller('SliderCtrl', function($scope, sliders, synthService, localData) 
   }
   var firstTime = true;
 
-    $scope.$on('volume changed', function() {
-      $scope.volume = localData.getVolume();
-      $scope.$apply();
+  $scope.$on('volume changed', _.debounce(function() {
+    $scope.volume = localData.getVolume();
+    $scope.$apply();
 
-      if (firstTime) {
-        firstTime = false;
-        $scope.togglePlay();
-      }
+    if (firstTime) {
+      firstTime = false;
+      $scope.togglePlay();
+    }
 
-      var synthValue = $scope.volume * 0.01;
+    var synthValue = $scope.volume * 0.01;
 
-      nodes.forEach(function(node, index) {
-        var param = node.synth.inputs.sources.source.mul.id + '.mul';
-        node.flock.input(param, Number(synthValue));
-      })
-    });
+    nodes.forEach(function(node, index) {
+      var param = node.synth.inputs.sources.source.mul.id + '.mul';
+      node.flock.input(param, Number(synthValue));
+    })
+  }, 40));
 
 });
 
