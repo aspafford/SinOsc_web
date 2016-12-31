@@ -17,25 +17,59 @@ app.factory('sliders', function() {
 
 app.controller('SliderCtrl', function($scope, sliders, synthService, localData) {
 
+  // var nodes = synthService.nodes;
   var nodes = synthService.nodes;
+  var numSynths = 18
+  var bus = 0;
+  var amFq = 1;
+  for(var i = 1; i <= numSynths; i++) {
 
-  // $scope.sliders = sliders;
+    var options = {
+      mul: 0.01,
+      phase: (5 % i),
+      filterFq: ((numSynths + 1) - i) * 100
+    };
 
-  // $scope.changedSlider = function(slider, value) {
-  //   // scale percentage values
-  //   if (slider.options && slider.options.scale === 'percent') {
-  //     value = (value * 0.01).toFixed(2);
-  //   }
-  //   // to-do: debounce
-  //   nodes.forEach(function(node, index) {
-  //     var param = node.synth.inputs.sources.source.mul.id + '.' + slider.param;
-  //     node.flock.input(param, Number(value));
-  //   })
-  // }
+    if (i < 14) {
+      options.amFq = (1/45) * i
+    } else {
+      options.amFq = (1/15) * i
+    }
+
+    var id = "synth" + i;
+    bus = (i % 2 === 0) ? 0 : 1;
+
+    nodes.push(new NoiseSynth(id, bus, options));
+  }
+
+  var isPlaying = false;
+  $scope.status = 'Play';
+  $scope.togglePlay = function() {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      $scope.status = 'Pause'
+      console.log($scope.status);
+      nodes.forEach(function(node, index) {
+        node.flock.play();
+      })
+    } else {
+      $scope.status = 'Play'
+      console.log($scope.status);
+      nodes.forEach(function(node, index) {
+        node.flock.pause();
+      })
+    }
+  }
+  var firstTime = true;
 
     $scope.$on('volume changed', function() {
       $scope.volume = localData.getVolume();
       $scope.$apply();
+
+      if (firstTime) {
+        firstTime = false;
+        $scope.togglePlay();
+      }
 
       var synthValue = $scope.volume * 0.01;
 

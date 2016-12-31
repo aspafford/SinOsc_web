@@ -26,14 +26,8 @@ button.play-button {
 .slider-group {
   display: flex;
   justify-content: center;
-  border-top: 1px solid #222;
+  margin-top: 50px;
 }
-
-// .slider {
-//   border: 1px solid;
-//   height: 170px;
-//   transform: rotate(-90deg);
-// }
 
 .slider-container {
   display: flex;
@@ -43,14 +37,14 @@ button.play-button {
 .vol-container {
   display: flex;
   align-items: flex-end;
-  border:1px solid yellow;
+  border: 2px solid yellow;
   height: 200px;
   width: 130px;
 }
 .vol-slider {
   width: 100%;
   background: white;
-  border:1px solid green;
+  border: 2px solid green;
   color: black;
   height: 30px;
 }

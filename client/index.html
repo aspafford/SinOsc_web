@@ -24,27 +24,17 @@
   <body>
 
     <div class="container">
-
-      <div ng-controller="PlayCtrl">
-        <button ng-click="togglePlay()" class="play-button">{{status}}</button>
-      </div>
-
       <div ng-controller="SliderCtrl" class="slider-group">
+        <div class="slider-container">
 
-<!--         <div ng-repeat="slider in sliders">
-          <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}" class="slider">
-          <div>{{slider.name}}: {{slider.value}}</div>
-        </div>
- -->
+          <div class="vol-container">
+            <div class="vol-slider" draggable></div>
+          </div>
 
-      <div class="slider-container">
-        <div class="vol-container">
-          <div class="vol-slider" draggable></div>
+          <div>vol {{volume}}</div>
+
         </div>
-        <div>vol {{volume}}</div>
       </div>
-
     </div>
-
   </body>
 </html>
