@@ -2,7 +2,6 @@ app.service('localData', function() {
   this.data = {}
 
   this.setVolume = function(value) {
-    console.log('set vol:', value)
     this.data.volume = value;
   }
   this.getVolume = function() {
