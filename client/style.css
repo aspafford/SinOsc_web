@@ -23,10 +23,9 @@ button.play-button {
   color: white;
 }
 
-.slider-group {
+.control-group {
   display: flex;
   justify-content: center;
-  margin-top: 50px;
 }
 
 .slider-container {

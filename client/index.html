@@ -26,17 +26,22 @@
   <body>
 
     <div class="container">
-      <div ng-controller="SliderCtrl" class="slider-group">
+
+
+      <div ng-controller="SliderCtrl" class="control-group">
         <div class="slider-container">
 
+          <div>Vol {{volume}}</div>
           <div class="vol-container">
             <div class="vol-slider" draggable></div>
           </div>
-
-          <div>vol {{volume}}</div>
-
         </div>
       </div>
+
+      <div ng-controller="PlayCtrl" class="control-group">
+        <button ng-click="togglePlay()" class="play-button">{{status}}</button>
+      </div>
+
     </div>
 
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
