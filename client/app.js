@@ -17,20 +17,22 @@ app.controller('SliderCtrl', function($scope, sliders, synthService, localData) 
 app.controller('PlayCtrl', function($scope, synthService) {
 
   synthService.nodes.noiseArr = [
-    synthService.noise(1, 2, {filterFq: 200, amFq: 0.7, phase: 1}), // mid
-    synthService.noise(1, 3, {filterFq: 400, amFq: 0.5, phase: 3}),
-    synthService.noise(1, 2, {filterFq: 900, amFq: 0.3, phase: 1}), // mid-high
-    synthService.noise(1, 3, {filterFq: 1700, amFq: 0.2, phase: 3}),
-    synthService.noise(1, 2, {filterFq: 60, amFq: 0.1, phase: 1}), // low
-    synthService.noise(1, 3, {filterFq: 70, amFq: 0.08, phase: 3}),
-    synthService.noise(1, 2, {filterFq: 8000, amFq: 0.2, phase: 0.5}), // high
-    synthService.noise(1, 3, {filterFq: 6000, amFq: 0.09, phase: 2})
+    synthService.noise(1, 4, {filterFq: 200, amFq: 0.7, phase: 1}), // mid
+    synthService.noise(1, 5, {filterFq: 400, amFq: 0.5, phase: 3}),
+    synthService.noise(1, 4, {filterFq: 900, amFq: 0.3, phase: 1}), // mid-high
+    synthService.noise(1, 5, {filterFq: 1700, amFq: 0.2, phase: 3}),
+    synthService.noise(1, 4, {filterFq: 60, amFq: 0.1, phase: 1}), // low
+    synthService.noise(1, 5, {filterFq: 70, amFq: 0.08, phase: 3}),
+    synthService.noise(1, 4, {filterFq: 8000, amFq: 0.2, phase: 0.5}), // high
+    synthService.noise(1, 5, {filterFq: 6000, amFq: 0.09, phase: 2})
   ]
 
   synthService.nodes.mixer = [
-    synthService.mixer("mixerL", 2, 0, {mul: 0.1}),
-    synthService.mixer("mixerR", 3, 1, {mul: 0.1})
+    synthService.mixer("mixerL", 4, 2, {mul: 0.1}),
+    synthService.mixer("mixerR", 5, 3, {mul: 0.1})
   ]
+
+  synthService.scopeOut();
 
   var isPlaying = false;
   $scope.status = 'Play';

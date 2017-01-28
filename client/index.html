@@ -27,11 +27,19 @@
 
     <div class="container">
 
+      <div class="view control-group">
+        <canvas id="waveformL" height="110" width="350" style="background: #111; "></canvas>
+      </div>
+
+      <div class="view control-group">
+        <canvas id="waveformR" height="110" width="350" style="background: #111; "></canvas>
+      </div>
+
 
       <div ng-controller="SliderCtrl" class="control-group">
         <div class="slider-container">
 
-          <div>Vol {{volume}}</div>
+          <!-- <div>Vol {{volume}}</div> -->
           <div class="vol-container">
             <div class="vol-slider" draggable></div>
           </div>

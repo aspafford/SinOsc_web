@@ -65,29 +65,44 @@ app.service("synthService", function() {
     )
   }
 
-  this.sine = function() {
-    return(
-      flock.synth({
-        synthDef: {
-          ugen: "flock.ugen.scope",
-          source: {
-            id: "player",
-            ugen: "flock.ugen.sinOsc",
-            freq: 30,
-            mul: 0.1
-          },
-          options: {
-            canvas: "#waveform",
-            styles: {
-              strokeColor: "yellow",
-              strokeWidth: 4
-            }
+  this.scopeOut = function() {
+    return flock.synth({
+      synthDef: [{
+        id: "scopeL",
+        ugen: "flock.ugen.scope",
+        expand: 1,
+        source: {
+          id: "playerL",
+          ugen: "flock.ugen.in",
+          bus: 2,
+          expand: 1
+        },
+        options: {
+          canvas: "#waveformL",
+          styles: {
+            strokeColor: "yellow",
+            strokeWidth: 1
           }
         }
-      })
-    )
+      },{
+        id: "scopeR",
+        ugen: "flock.ugen.scope",
+        expand: 1,
+        source: {
+          id: "playerR",
+          ugen: "flock.ugen.in",
+          bus: 3,
+          expand: 1
+        },
+        options: {
+          canvas: "#waveformR",
+          styles: {
+            strokeColor: "yellow",
+            strokeWidth: 1
+          }
+        }
+      }]
+    })
   }
-
-
 
 })
