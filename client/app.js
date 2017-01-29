@@ -66,11 +66,11 @@ app.controller('PlayCtrl', function($scope, synthService) {
   ]
 
   synthService.nodes.mixer = [
-    synthService.mixer("mixerL", 4, 2, {mul: 0.1}),
-    synthService.mixer("mixerR", 5, 3, {mul: 0.1})
+    synthService.mixer("mixerL", 4, 0, {mul: 0.1}),
+    synthService.mixer("mixerR", 5, 1, {mul: 0.1})
   ]
 
-  synthService.scopeOut();
+  // synthService.scopeOut();
 
   var isPlaying = false;
   $scope.status = 'Play';
