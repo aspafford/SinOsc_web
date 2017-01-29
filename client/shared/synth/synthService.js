@@ -80,7 +80,7 @@ app.service("synthService", function() {
         options: {
           canvas: "#waveformL",
           styles: {
-            strokeColor: "yellow",
+            strokeColor: "#88f",
             strokeWidth: 1
           }
         }
@@ -97,7 +97,7 @@ app.service("synthService", function() {
         options: {
           canvas: "#waveformR",
           styles: {
-            strokeColor: "yellow",
+            strokeColor: "#f88",
             strokeWidth: 1
           }
         }

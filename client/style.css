@@ -14,13 +14,16 @@ body {
 }
 
 button.play-button {
+  height: 50px;
+  width: 50px;
   background: black;
   border: 1px solid white;
   border-radius: 4px;
   font-size: 1.1em;
-  padding: 20px;
-  margin: 20px;
+  // padding: 20px;
+  margin: 30px 10px;
   color: white;
+  outline: none;
 }
 
 .control-group {
@@ -37,8 +40,9 @@ button.play-button {
   display: flex;
   align-items: flex-end;
   border: 2px solid yellow;
-  height: 200px;
-  width: 130px;
+  height: 110px;
+  width: 55px;
+  margin-right: 10px;
 }
 .vol-slider {
   width: 100%;

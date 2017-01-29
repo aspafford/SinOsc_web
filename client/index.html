@@ -12,7 +12,7 @@
     <script src="./src/jquery-ui.min.js"></script>
     <script src="./src/jquery-touch-punch.min.js"></script>
     <script src="./src/angular.min.js"></script>
-    <script src="./src/hidpi-canvas-polyfill-master/dist/hidpi-canvas.min.js"></script>
+    <!-- <script src="./src/hidpi-canvas-polyfill-master/dist/hidpi-canvas.min.js"></script> -->
     <!-- third-party & flocking sources -->
     <script src="./dist/src.js"></script>
     <!-- local -->
@@ -28,28 +28,25 @@
 
     <div class="container">
 
-<!--       <div class="view control-group">
-        <canvas id="waveformL" height="110" width="350" style="background: #111; "></canvas>
-      </div>
-
       <div class="view control-group">
-        <canvas id="waveformR" height="110" width="350" style="background: #111; "></canvas>
-      </div>
- -->
+        <div ng-controller="PlayCtrl">
+          <button ng-click="togglePlay()" class="play-button">{{status}}</button>
+        </div>
+        <div ng-controller="SliderCtrl">
+          <div class="slider-container">
 
-      <div ng-controller="SliderCtrl" class="control-group">
-        <div class="slider-container">
-
-          <!-- <div>Vol {{volume}}</div> -->
-          <div class="vol-container">
-            <div class="vol-slider" draggable></div>
+            <!-- <div>Vol {{volume}}</div> -->
+            <div class="vol-container">
+              <div class="vol-slider" draggable></div>
+            </div>
           </div>
         </div>
+        <canvas id="waveformL" height="110" width="55" style="background: #fff; "></canvas>
+        <canvas id="waveformR" height="110" width="55" style="background: #fff; "></canvas>
       </div>
 
-      <div ng-controller="PlayCtrl" class="control-group">
-        <button ng-click="togglePlay()" class="play-button">{{status}}</button>
-      </div>
+
+
 
     </div>
 

@@ -14,7 +14,7 @@ app.controller('SliderCtrl', function($scope, sliders, synthService, localData) 
 
 });
 
-app.controller('PlayCtrl', function($scope, synthService) {
+app.controller('PlayCtrl', function($scope, $sce, synthService) {
 
   var data = {};
   var intervalId = null;
@@ -66,24 +66,24 @@ app.controller('PlayCtrl', function($scope, synthService) {
   ]
 
   synthService.nodes.mixer = [
-    synthService.mixer("mixerL", 4, 0, {mul: 0.1}),
-    synthService.mixer("mixerR", 5, 1, {mul: 0.1})
+    synthService.mixer("mixerL", 4, 2, {mul: 0.1}),
+    synthService.mixer("mixerR", 5, 3, {mul: 0.1})
   ]
 
-  // synthService.scopeOut();
+  synthService.scopeOut();
 
   var isPlaying = false;
-  $scope.status = 'Play';
+  $scope.status =  '>';
   $scope.togglePlay = function() {
     isPlaying = !isPlaying;
     if (isPlaying) {
-      $scope.status = 'Pause'
+      $scope.status = '='
       noiseRoutine(); // start noise routine
       synthService.nodes.noiseArr[0].play();
       synthService.nodes.mixer[0].input('mixerL.mul', 0.1);
       synthService.nodes.mixer[1].input('mixerR.mul', 0.1);
     } else {
-      $scope.status = 'Play'
+      $scope.status = '>'
       clearInterval(intervalId); // stop noise routine
       synthService.nodes.mixer[0].input('mixerL.mul', 0);
       synthService.nodes.mixer[1].input('mixerR.mul', 0);
