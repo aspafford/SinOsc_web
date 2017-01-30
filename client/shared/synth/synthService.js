@@ -45,6 +45,7 @@ app.service("synthService", function() {
             bus: bus,
             expand: 1,
             sources: {
+              id: "n2",
               ugen: "flock.ugen.filter.biquad.bp",
               freq: options.filterFq,
               q: 0.5,

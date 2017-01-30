@@ -51,3 +51,21 @@ button.play-button {
   color: black;
   height: 30px;
 }
+
+/* channel display */
+.channel {
+  display: inline-block;
+  height: 100px;
+  padding: 4px;
+}
+.channel.left {
+  border-top: 4px solid #88f;
+}
+.channel.right {
+  border-top: 4px solid #f88;
+}
+.channel span {
+  background: black;
+  color: white;
+  font-size: 0.7em;
+}
