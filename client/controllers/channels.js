@@ -34,6 +34,7 @@ app.controller('ChannelCtrl', function($rootScope, $scope, $timeout, synthServic
     $timeout(function() {
       $scope.synths.forEach(function(synth, index) {
         $scope.channels[index].speed = synth.get('n1.freq');
+        $scope.channels[index].cf = synth.get('n2.freq');
       })
     }, 100)
   })

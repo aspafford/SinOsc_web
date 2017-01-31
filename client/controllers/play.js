@@ -8,48 +8,85 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
     intervalId = window.setInterval(function () {
       // get random synth
       var synth = _.sample(synthService.nodes.noiseArr);
+
       // get current am freq value
-      var value = synth.get('n1.freq');
+      var fq = synth.get('n1.freq');
+
+      // cf
+      var cf = synth.get('n2.freq');
+
+
       // initialize min and max values for this synth
-      var rangeMax = value * 0.4; // max deviation from original value
+      // var rangeMax = value * 0.4; // max deviation from original value
+      var rangeMax = 0.4; // max deviation from original value
       if (!data[synth.id]) {
         data[synth.id] = {};
-        data[synth.id].range = {min: value - rangeMax, max: value + rangeMax}
+        data[synth.id].fqOrig = fq;
+        data[synth.id].cfOrig = cf;
+        // data[synth.id].range = {min: value - rangeMax, max: value + rangeMax}
         console.log(data);
       }
+      var fqOrig = data[synth.id].fqOrig;
+      var cfOrig = data[synth.id].cfOrig;
       // add or subtract to update value
-      var variance = value * 0.01; // get a small percent of current value
+      var variance = fq * 0.01; // get a small percent of current value
+      var cfVariance = cf * 0.02;
       if (_.sample([0,1]) === 0) {
-        value += variance;
+        fq += variance;
       } else {
-        value -= variance;
+        fq -= variance;
       }
-      value = value.toFixed(3);
-      console.log('value:', value);
+      if (_.sample([0,1]) === 0) {
+        cf += cfVariance;
+      } else {
+        cf -= cfVariance;
+      }
+      cf = Math.round(cf);
+      // console.log('cf:', cf);
       // check if in range
-      if (value > data[synth.id].range.min && value < data[synth.id].range.max) {
-        console.log('updating', synth.id, value);
-        synth.input('n1.freq', Number(value));
-        $rootScope.$broadcast('update');
+      // update modulation frequency
+      if (_.sample([0,1]) === 0) {
+        var fqDiff = fqOrig * rangeMax;
+        var fqMin = fqOrig - fqDiff;
+        var fqMax = fqOrig + fqDiff;
+        // console.log("fq:", fq, "fqMin", fqMin, "fqMax", fqMax, "fqOrig", fqOrig);
+        if (fq > fqMin && fq < fqMax) {
+          console.log('updating FQ', synth.id, fq);
+          synth.input('n1.freq', Number(fq));
+          $rootScope.$broadcast('update');
+        } else {
+          console.log('FQ OUT of bounds ', synth.id, fq);
+        }
       } else {
-        console.log('OUT of bounds ', synth.id, value);
+        var cfDiff = cfOrig * rangeMax;
+        var cfMin = cfOrig - cfDiff;
+        var cfMax = cfOrig + cfDiff;
+        console.log("cf:", cf, "cfMin", cfMin, "cfMax", cfMax, "cfOrig", cfOrig);
+        if (cf > cfMin && cf < cfMax) {
+          console.log('updating CF', synth.id, cf);
+          synth.input('n2.freq', Number(cf));
+          $rootScope.$broadcast('update');
+        } else {
+          console.log('CF OUT of bounds ', synth.id, cf);
+        }
       }
-    }, 500);
+      // update center frequency
+    }, 300);
   }
 
   synthService.nodes.noiseArr = [
     synthService.noise("n1", 4, {filterFq: 200, amFq: 0.400, phase: 1}), // mid
-    synthService.noise("n1", 5, {filterFq: 400, amFq: 0.300, phase: 3}),
+    synthService.noise("n1", 5, {filterFq: 200, amFq: 0.400, phase: 3}),
     synthService.noise("n1", 4, {filterFq: 500, amFq: 0.040, phase: 1}), // mid
-    synthService.noise("n1", 5, {filterFq: 300, amFq: 0.030, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 900, amFq: 0.200, phase: 1}), // mid-high
-    synthService.noise("n1", 5, {filterFq: 1000, amFq: 0.100, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 30, amFq: 0.070, phase: 1}), // low
-    synthService.noise("n1", 5, {filterFq: 37, amFq: 0.060, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 8000, amFq: 0.050, phase: 0.5}), // high
-    synthService.noise("n1", 5, {filterFq: 6000, amFq: 0.040, phase: 2}),
-    synthService.noise("n1", 4, {filterFq: 11000, amFq: 0.050, phase: 0.5}), // high
-    synthService.noise("n1", 5, {filterFq: 9000, amFq: 0.040, phase: 2})
+    synthService.noise("n1", 5, {filterFq: 500, amFq: 0.040, phase: 3}),
+    synthService.noise("n1", 4, {filterFq: 1000, amFq: 0.200, phase: 1}), // mid-high
+    synthService.noise("n1", 5, {filterFq: 1000, amFq: 0.200, phase: 3}),
+    synthService.noise("n1", 4, {filterFq: 37, amFq: 0.070, phase: 1}), // low
+    synthService.noise("n1", 5, {filterFq: 37, amFq: 0.070, phase: 3}),
+    synthService.noise("n1", 4, {filterFq: 6000, amFq: 0.050, phase: 0.5}), // high
+    synthService.noise("n1", 5, {filterFq: 6000, amFq: 0.050, phase: 2}),
+    synthService.noise("n1", 4, {filterFq: 8000, amFq: 0.040, phase: 1}), // high
+    synthService.noise("n1", 5, {filterFq: 8000, amFq: 0.040, phase: 3})
   ]
 
   synthService.nodes.mixer = [
