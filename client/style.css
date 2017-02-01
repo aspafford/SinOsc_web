@@ -69,3 +69,30 @@ button.play-button {
   color: white;
   font-size: 0.7em;
 }
+
+/* animation */
+.speed-animation {
+  background-color: yellow;
+  width: 10px;
+  height: 10px;
+}
+@keyframes divbigger {
+  0% {
+    width: 10px;
+    height: 10px;
+  }
+  50% {
+    height: 20px;
+  }
+  100% {
+    width: 10px;
+    height: 10px;
+  }
+}
+
+.paused {
+    -webkit-animation-play-state:paused;
+    -moz-animation-play-state:paused;
+    -o-animation-play-state:paused; 
+    animation-play-state:paused;
+}

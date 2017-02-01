@@ -75,18 +75,18 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
   }
 
   synthService.nodes.noiseArr = [
-    synthService.noise("n1", 4, {filterFq: 200, amFq: 0.400, phase: 1}), // mid
-    synthService.noise("n1", 5, {filterFq: 200, amFq: 0.400, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 500, amFq: 0.040, phase: 1}), // mid
-    synthService.noise("n1", 5, {filterFq: 500, amFq: 0.040, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 1000, amFq: 0.200, phase: 1}), // mid-high
-    synthService.noise("n1", 5, {filterFq: 1000, amFq: 0.200, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 37, amFq: 0.070, phase: 1}), // low
-    synthService.noise("n1", 5, {filterFq: 37, amFq: 0.070, phase: 3}),
-    synthService.noise("n1", 4, {filterFq: 6000, amFq: 0.050, phase: 0.5}), // high
-    synthService.noise("n1", 5, {filterFq: 6000, amFq: 0.050, phase: 2}),
-    synthService.noise("n1", 4, {filterFq: 8000, amFq: 0.040, phase: 1}), // high
-    synthService.noise("n1", 5, {filterFq: 8000, amFq: 0.040, phase: 3})
+    synthService.noise("n1", 4, {filterFq: 200, amFq: 0.400}), // mid
+    synthService.noise("n1", 5, {filterFq: 200, amFq: 0.400}),
+    synthService.noise("n1", 4, {filterFq: 500, amFq: 0.040}), // mid
+    synthService.noise("n1", 5, {filterFq: 500, amFq: 0.040}),
+    synthService.noise("n1", 4, {filterFq: 1000, amFq: 0.200}), // mid-high
+    synthService.noise("n1", 5, {filterFq: 1000, amFq: 0.200}),
+    synthService.noise("n1", 4, {filterFq: 37, amFq: 0.070}), // low
+    synthService.noise("n1", 5, {filterFq: 37, amFq: 0.070}),
+    synthService.noise("n1", 4, {filterFq: 6000, amFq: 0.050}), // high
+    synthService.noise("n1", 5, {filterFq: 6000, amFq: 0.050}),
+    synthService.noise("n1", 4, {filterFq: 8000, amFq: 0.040}), // high
+    synthService.noise("n1", 5, {filterFq: 8000, amFq: 0.040})
   ]
 
   synthService.nodes.mixer = [
@@ -104,14 +104,23 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
       $scope.status = '||'
       noiseRoutine(); // start noise routine
       synthService.nodes.noiseArr[0].play();
+      synthService.nodes.noiseArr.forEach(function(item) {
+        var fq = item.get('n1.freq');
+        $('.speed-animation.' + item.id).css('animation', 'divbigger ' + (1/fq) / 2 + 's infinite');
+      });
+
       synthService.nodes.mixer[0].input('mixerL.mul', 0.1);
       synthService.nodes.mixer[1].input('mixerR.mul', 0.1);
     } else {
       $scope.status = '>'
       clearInterval(intervalId); // stop noise routine
+      synthService.nodes.noiseArr[0].pause();
+      // $('.speed-animation').addClass('paused');
+
       synthService.nodes.mixer[0].input('mixerL.mul', 0);
       synthService.nodes.mixer[1].input('mixerR.mul', 0);
     }
+    $rootScope.$broadcast('update');
   }
 
 });

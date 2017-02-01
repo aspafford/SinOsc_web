@@ -49,20 +49,12 @@
       </div>
 
       <div ng-controller="ChannelCtrl" class="control-group">
-        <!-- left -->
-        <div ng-repeat="synth in channels | filter:filterLeft:item | orderBy: 'color'" class="channel left" style="background-color: rgb({{ synth.grayscale }})">
+        <div ng-repeat="synth in channels | orderBy: 'color'" class="channel left" style="background-color: rgb({{ synth.grayscale }})">
           <span>CF: {{ synth.cf }}</span><br>
           <span>{{ synth.id }}</span><br>
-          <span>speed: {{ synth.speed.toFixed(3) }}</span>
+          <span class="speed">speed: {{ synth.speed.toFixed(3) }}</span>
+          <div class="speed-animation {{synth.id}}"></div>
         </div>
-        <!-- right -->
-        <div ng-repeat="synth in channels | filter:filterRight:item | orderBy: 'color'" class="channel right" style="background-color: rgb({{ synth.grayscale }})">
-          <span>CF: {{ synth.cf }}</span><br>
-          <span>{{ synth.id }}</span><br>
-          <span>speed: {{ synth.speed.toFixed(3) }}</span>
-        </div>
-      </div>
-
     </div>
 
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
