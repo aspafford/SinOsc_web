@@ -71,11 +71,6 @@ button.play-button {
 }
 
 /* animation */
-.speed-animation {
-  background-color: yellow;
-  width: 10px;
-  height: 10px;
-}
 @keyframes divbigger {
   0% {
     width: 10px;
@@ -88,6 +83,15 @@ button.play-button {
     width: 10px;
     height: 10px;
   }
+}
+
+.speed-animation {
+  background-color: yellow;
+  width: 10px;
+  height: 10px;
+  animation-name: divbigger;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
 }
 
 .paused {

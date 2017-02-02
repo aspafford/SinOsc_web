@@ -103,22 +103,20 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
     if (isPlaying) {
       $scope.status = '||'
       noiseRoutine(); // start noise routine
-      synthService.nodes.noiseArr[0].play();
       synthService.nodes.noiseArr.forEach(function(item) {
+        item.play();
         var fq = item.get('n1.freq');
-        $('.speed-animation.' + item.id).css('animation', 'divbigger ' + (1/fq) / 2 + 's infinite');
+        $('.speed-animation.' + item.id).css('animation-duration', (1/fq) / 2 + 's');
       });
-
-      synthService.nodes.mixer[0].input('mixerL.mul', 0.1);
-      synthService.nodes.mixer[1].input('mixerR.mul', 0.1);
+      $('.speed-animation').removeClass('paused');
     } else {
       $scope.status = '>'
       clearInterval(intervalId); // stop noise routine
-      synthService.nodes.noiseArr[0].pause();
-      // $('.speed-animation').addClass('paused');
 
-      synthService.nodes.mixer[0].input('mixerL.mul', 0);
-      synthService.nodes.mixer[1].input('mixerR.mul', 0);
+      synthService.nodes.noiseArr.forEach(function(item) {
+        item.pause();
+      });
+      $('.speed-animation').addClass('paused');
     }
     $rootScope.$broadcast('update');
   }
