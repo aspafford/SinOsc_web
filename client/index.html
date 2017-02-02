@@ -49,10 +49,11 @@
       </div>
 
       <div ng-controller="ChannelCtrl" class="control-group">
-        <div ng-repeat="synth in channels | orderBy: 'color'" class="channel left" style="background-color: rgb({{ synth.grayscale }})">
-          <span>CF: {{ synth.cf }}</span><br>
-          <span>{{ synth.id }}</span><br>
-          <span class="speed">speed: {{ synth.speed.toFixed(3) }}</span>
+        <div ng-repeat="synth in channels | orderBy: 'color'" class="channel left bus-{{synth.bus}}">
+          <!-- <span>CF: {{ synth.cf }}</span> -->
+          <div class="cf-display" style="background-color: rgb({{ synth.grayscale }})"></div>
+          <!-- <span>{{ synth.id }}</span><br> -->
+          <!-- <span class="speed">speed: {{ synth.speed.toFixed(3) }}</span> -->
           <div class="speed-animation {{synth.id}} paused"></div>
         </div>
     </div>

@@ -41,7 +41,7 @@ button.play-button {
   align-items: flex-end;
   border: 2px solid yellow;
   height: 110px;
-  width: 55px;
+  width: 45px;
   margin-right: 10px;
 }
 .vol-slider {
@@ -55,13 +55,11 @@ button.play-button {
 /* channel display */
 .channel {
   display: inline-block;
-  height: 100px;
-  padding: 4px;
 }
-.channel.left {
+.channel.bus-4 {
   border-top: 4px solid #88f;
 }
-.channel.right {
+.channel.bus-5 {
   border-top: 4px solid #f88;
 }
 .channel span {
@@ -70,28 +68,42 @@ button.play-button {
   font-size: 0.7em;
 }
 
+/* frequency display */
+.cf-display {
+  width: 10px;
+  height: 10px;
+  border: 1px solid white;
+}
+
 /* animation */
 @keyframes divbigger {
   0% {
+    background-color: yellow;
+    border: 1px solid white;
+    border-right: 1px solid white;
     width: 10px;
     height: 10px;
   }
   50% {
-    height: 20px;
+    background-color: pink;
+    border-right: 1px solid red;
+    width: 30px;
   }
   100% {
-    width: 10px;
-    height: 10px;
+    background-color: yellow;
+    border-right: 1px solid white;
   }
 }
 
 .speed-animation {
+  border: 1px solid white;
   background-color: yellow;
   width: 10px;
   height: 10px;
   animation-name: divbigger;
   animation-duration: 1s;
   animation-iteration-count: infinite;
+  transition: all 0.3s;
 }
 
 .paused {

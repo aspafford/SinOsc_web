@@ -53,6 +53,7 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
         if (fq > fqMin && fq < fqMax) {
           console.log('updating FQ', synth.id, fq);
           synth.input('n1.freq', Number(fq));
+          $('.speed-animation.' + synth.id).css('animation-duration', (1/fq) / 2 + 's');
           $rootScope.$broadcast('update');
         } else {
           console.log('FQ OUT of bounds ', synth.id, fq);
@@ -71,7 +72,7 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
         }
       }
       // update center frequency
-    }, 300);
+    }, 900);
   }
 
   synthService.nodes.noiseArr = [
