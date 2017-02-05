@@ -102,7 +102,7 @@ app.controller('PlayCtrl', function($scope, $rootScope, $sce, synthService) {
   $scope.togglePlay = function() {
     isPlaying = !isPlaying;
     if (isPlaying) {
-      $scope.status = '||'
+      $scope.status = '| |'
       noiseRoutine(); // start noise routine
       synthService.nodes.noiseArr.forEach(function(item) {
         item.play();

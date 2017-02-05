@@ -30,35 +30,50 @@
   <body>
 
     <div class="container">
-
+    
+      <!-- user controls -->
       <div class="view control-group">
-        <div ng-controller="PlayCtrl">
-          <button ng-click="togglePlay()" class="play-button">{{status}}</button>
-        </div>
+        <!-- volume slider -->
         <div ng-controller="SliderCtrl">
           <div class="slider-container">
-
-            <!-- <div>Vol {{volume}}</div> -->
             <div class="vol-container">
-              <div class="vol-slider" draggable></div>
+              <div class="vol-slider" draggable><span>&mdash;</span><span>&mdash;</span><span>&mdash;</span></div>
             </div>
           </div>
         </div>
-        <canvas id="waveformL" height="220" width="110" style="background: #fff; height: 110px; width: 55px;"></canvas>
-        <canvas id="waveformR" height="220" width="110" style="background: #fff; height: 110px; width: 55px;"></canvas>
+        <!-- play button -->
+        <div ng-controller="PlayCtrl">
+          <button ng-click="togglePlay()" class="play-button">{{status}}</button>
+        </div>
+      </div>
+      <!-- waveform -->
+      <div class="view">
+        <div>
+          <canvas id="waveformL" height="328" width="328" style="background: #fff; height: 164px; width: 164px;"></canvas>
+        </div>
+        <div>
+          <canvas id="waveformR" height="328" width="328" style="background: #fff; height: 164px; width: 164px;"></canvas>
+        </div>
+      </div>
+      <!-- synths display -->
+      <div ng-controller="ChannelCtrl">
+        <!-- left -->
+        <div class="channel-group" style="margin-bottom: 4px;">
+          <div ng-repeat="synth in channels | orderBy: 'color': 'reverse'" class="channel left bus-{{synth.bus}}" ng-if="synth.bus % 2 == 0">
+            <div class="speed-animation {{synth.id}} paused" style="background-color: rgb({{ synth.grayscale }})"></div>
+          </div>
+        </div>
+        <!-- right -->
+        <div class="channel-group">
+          <div ng-repeat="synth in channels | orderBy: 'color': 'reverse'" class="channel right bus-{{synth.bus}}" ng-if="synth.bus % 2 == 1">
+            <div class="speed-animation {{synth.id}} paused" style="background-color: rgb({{ synth.grayscale }})"></div>
+          </div>
+        </div>
       </div>
 
-      <div ng-controller="ChannelCtrl" class="control-group">
-        <div ng-repeat="synth in channels | orderBy: 'color'" class="channel left bus-{{synth.bus}}">
-          <!-- <span>CF: {{ synth.cf }}</span> -->
-          <div class="cf-display" style="background-color: rgb({{ synth.grayscale }})"></div>
-          <!-- <span>{{ synth.id }}</span><br> -->
-          <!-- <span class="speed">speed: {{ synth.speed.toFixed(3) }}</span> -->
-          <div class="speed-animation {{synth.id}} paused"></div>
-        </div>
-    </div>
+    </div><!-- ./container -->
 
     <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
-    
+
   </body>
 </html>
