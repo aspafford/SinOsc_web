@@ -13,21 +13,39 @@
   <script src="./shared/util/debounce.js"></script>
   <script src="./shared/synth/sine.js"></script>
   <script src="./shared/synth/noise.js"></script>
+
+  <script src="./node_modules/react/dist/react.js"></script>
+  <script src="./node_modules/react-dom/dist/react-dom.js"></script>
+
+  <!-- <script src="https://unpkg.com/react@latest/dist/react.js"></script> -->
+  <!-- <script src="https://unpkg.com/react-dom@latest/dist/react-dom.js"></script> -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
   <script src="app.js"></script>
+
+
 </head>
 <body>
 noise
-  <div ng-controller="PlayCtrl">
+  <div id="root"></div>
+
+<!--   <div ng-controller="PlayCtrl">
     <button ng-click="togglePlay()">{{status}}</button>
   </div>
-  <div ng-controller="SliderCtrl">
+ -->  
+
+<!--   <div ng-controller="SliderCtrl">
     <div ng-repeat="slider in sliders">
       <input type="range" name="range" ng-change="changedSlider(slider, slider.value)" ng-model="slider.value" min="{{slider.min}}" max="{{slider.max}}">
       <span>{{slider.name}}: {{slider.value}}</span>
     </div>
   </div>
+ -->  
   <div class="view">
     <canvas id="waveform" height="600" width="1350" style="background: #000; "></canvas>
   </div>
+
+  <script src="./button.js" type="text/babel"></script>
+
 </body>
 </html>
