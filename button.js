@@ -1,9 +1,10 @@
 class Button extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {status: false};
+    this.state = {status: false, volume: 1};
 
     this.clicker = this.clicker.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
@@ -15,7 +16,7 @@ class Button extends React.Component {
           id: "player",
           ugen: "flock.ugen.sinOsc",
           freq: 300,
-          mul: 0.1
+          mul: 0.01
         },
         options: {
           canvas: "#waveform",
@@ -30,6 +31,11 @@ class Button extends React.Component {
   }
 
   componentWillUnmount() {
+  }
+
+  handleChange(event) {
+    this.setState({volume: event.target.value});
+    this.synth.input('player.mul', this.state.volume * 0.01);
   }
 
   clicker() {
@@ -54,6 +60,10 @@ class Button extends React.Component {
     return (
       <div>
         <button name="button" onClick={this.clicker}>{this.state.status ? 'Pause' : 'Play'}</button>
+        <br />
+        <input type="range" defaultValue={this.state.volume} onChange={this.handleChange} />
+        <br />
+        Volume: {this.state.volume}
       </div>
     );
   }
