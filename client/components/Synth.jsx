@@ -21,7 +21,7 @@ export default class Synth extends React.Component {
           id: "player",
           ugen: "flock.ugen.sinOsc",
           freq: 200,
-          mul: 0.03
+          mul: 0.01
         },
         options: {
           canvas: "#waveform",
