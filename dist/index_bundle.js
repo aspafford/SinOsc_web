@@ -9953,36 +9953,101 @@ var Synth = function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
 
+      var bus = parseInt(this.props.channel);
+
+      this.mixer = flock.synth({
+        synthDef: {
+          ugen: "flock.ugen.out",
+          bus: bus,
+          expand: 1,
+          sources: {
+            id: "mixer" + bus,
+            ugen: "flock.ugen.in",
+            bus: bus + 2,
+            mul: 0.2,
+            expand: 1
+          }
+        }
+      });
+
       var canvas = "#" + this.props.canvas;
 
       var freq = parseInt(this.props.freq);
 
       var s = {
-        synthDef: [{
-          ugen: "flock.ugen.silence"
-        }, {
-          ugen: "flock.ugen.silence"
-        }]
-      };
-
-      s.synthDef[this.props.channel] = {
-        ugen: "flock.ugen.scope",
-        source: {
-          id: "player",
-          ugen: "flock.ugen.sinOsc",
-          freq: freq,
-          mul: 0.01
-        },
-        options: {
-          canvas: canvas,
-          styles: {
-            strokeColor: "yellow",
-            strokeWidth: 4
+        synthDef: {
+          ugen: "flock.ugen.out",
+          inputs: {
+            bus: bus + 2,
+            expand: 1,
+            sources: {
+              id: "player",
+              ugen: "flock.ugen.sinOsc",
+              freq: freq,
+              mul: 0.2,
+              phase: 1
+            }
           }
         }
       };
 
       this.synth = flock.synth(s);
+
+      this.scopeOut = flock.synth({
+        synthDef: [{
+          id: "scopeL",
+          ugen: "flock.ugen.scope",
+          expand: 1,
+          source: {
+            id: "playerL",
+            ugen: "flock.ugen.in",
+            bus: 2,
+            expand: 1
+          },
+          options: {
+            canvas: "#waveformL",
+            styles: {
+              strokeColor: "#88f",
+              strokeWidth: 1
+            }
+          }
+        }, {
+          id: "scopeR",
+          ugen: "flock.ugen.scope",
+          expand: 1,
+          source: {
+            id: "playerR",
+            ugen: "flock.ugen.in",
+            bus: 3,
+            expand: 1
+          },
+          options: {
+            canvas: "#waveformR",
+            styles: {
+              strokeColor: "#f88",
+              strokeWidth: 1
+            }
+          }
+        }]
+      });
+
+      this.sin1 = function (bus, fq) {
+        return flock.synth({
+          synthDef: {
+            ugen: "flock.ugen.out",
+            inputs: {
+              bus: bus,
+              expand: 2,
+              sources: {
+                ugen: "flock.ugen.sinOsc",
+                freq: fq,
+                mul: 0.2,
+                phase: 1
+              }
+            }
+          }
+        });
+      };
     }
   }, {
     key: "handleVolume",
