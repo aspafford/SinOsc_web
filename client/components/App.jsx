@@ -3,6 +3,7 @@
 */
 import React from 'react';
 import Synth from './Synth.jsx';
+import Scope from './Scope.jsx';
 
 export default class App extends React.Component {
 
@@ -34,8 +35,9 @@ export default class App extends React.Component {
       <div>
         <button name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</button>
         <br />
-        <Synth canvas="waveformL" channel="0" freq="200" />
-        <Synth canvas="waveformR" channel="1" freq="300" />
+        <Synth channel="0" freq="200" />
+        <Synth channel="1" freq="300" />
+        <Scope />
       </div>
     );
   }
