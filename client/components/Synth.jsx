@@ -14,24 +14,40 @@ export default class Synth extends React.Component {
 
   componentDidMount() {
 
-    this.synth = flock.synth({
-      synthDef: {
-        ugen: "flock.ugen.scope",
-        source: {
-          id: "player",
-          ugen: "flock.ugen.sinOsc",
-          freq: 200,
-          mul: 0.01
+    let canvas = "#" + this.props.canvas;
+
+    let freq = parseInt(this.props.freq);
+
+
+    let s = {
+      synthDef: [
+        {
+          ugen: "flock.ugen.silence"
         },
-        options: {
-          canvas: "#waveform",
-          styles: {
-            strokeColor: "yellow",
-            strokeWidth: 4
-          }
+        {
+          ugen: "flock.ugen.silence"
+        }
+      ]
+    }
+
+    s.synthDef[this.props.channel] = {
+      ugen: "flock.ugen.scope",
+      source: {
+        id: "player",
+        ugen: "flock.ugen.sinOsc",
+        freq: freq,
+        mul: 0.01
+      },
+      options: {
+        canvas: canvas,
+        styles: {
+          strokeColor: "yellow",
+          strokeWidth: 4
         }
       }
-    });
+    }
+
+    this.synth = flock.synth(s);
 
   }
 
