@@ -9886,7 +9886,8 @@ var App = function (_React$Component) {
           this.state.playing ? 'Pause' : 'Play'
         ),
         _react2.default.createElement('br', null),
-        _react2.default.createElement(_Synth2.default, null)
+        _react2.default.createElement(_Synth2.default, { canvas: 'waveformL', channel: '0', freq: '200' }),
+        _react2.default.createElement(_Synth2.default, { canvas: 'waveformR', channel: '1', freq: '300' })
       );
     }
   }]);
@@ -9952,24 +9953,36 @@ var Synth = function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
 
-      this.synth = flock.synth({
-        synthDef: {
-          ugen: "flock.ugen.scope",
-          source: {
-            id: "player",
-            ugen: "flock.ugen.sinOsc",
-            freq: 200,
-            mul: 0.03
-          },
-          options: {
-            canvas: "#waveform",
-            styles: {
-              strokeColor: "yellow",
-              strokeWidth: 4
-            }
+      var canvas = "#" + this.props.canvas;
+
+      var freq = parseInt(this.props.freq);
+
+      var s = {
+        synthDef: [{
+          ugen: "flock.ugen.silence"
+        }, {
+          ugen: "flock.ugen.silence"
+        }]
+      };
+
+      s.synthDef[this.props.channel] = {
+        ugen: "flock.ugen.scope",
+        source: {
+          id: "player",
+          ugen: "flock.ugen.sinOsc",
+          freq: freq,
+          mul: 0.01
+        },
+        options: {
+          canvas: canvas,
+          styles: {
+            strokeColor: "yellow",
+            strokeWidth: 4
           }
         }
-      });
+      };
+
+      this.synth = flock.synth(s);
     }
   }, {
     key: "handleVolume",
