@@ -9825,13 +9825,13 @@ var _react = __webpack_require__(26);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Synth = __webpack_require__(89);
-
-var _Synth2 = _interopRequireDefault(_Synth);
-
-var _Scope = __webpack_require__(88);
+var _Scope = __webpack_require__(89);
 
 var _Scope2 = _interopRequireDefault(_Scope);
+
+var _Noise = __webpack_require__(88);
+
+var _Noise2 = _interopRequireDefault(_Noise);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -9890,8 +9890,8 @@ var App = function (_React$Component) {
           this.state.playing ? 'Pause' : 'Play'
         ),
         _react2.default.createElement('br', null),
-        _react2.default.createElement(_Synth2.default, { channel: '0', freq: '200' }),
-        _react2.default.createElement(_Synth2.default, { channel: '1', freq: '300' }),
+        _react2.default.createElement(_Noise2.default, { channel: '0', freq: '400', amFreq: '1.0' }),
+        _react2.default.createElement(_Noise2.default, { channel: '1', freq: '400', amFreq: '1.0' }),
         _react2.default.createElement(_Scope2.default, null)
       );
     }
@@ -9931,66 +9931,98 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ./client/components/Scope.jsx
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ./client/components/Noise.jsx
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 
-var Scope = function (_React$Component) {
-  _inherits(Scope, _React$Component);
+var Noise = function (_React$Component) {
+  _inherits(Noise, _React$Component);
 
-  function Scope() {
-    _classCallCheck(this, Scope);
+  function Noise(props) {
+    _classCallCheck(this, Noise);
 
-    return _possibleConstructorReturn(this, (Scope.__proto__ || Object.getPrototypeOf(Scope)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (Noise.__proto__ || Object.getPrototypeOf(Noise)).call(this, props));
+
+    _this.state = { freq: 2, amFreq: 1.0 };
+
+    _this.handleRange = _this.handleRange.bind(_this);
+    return _this;
   }
 
-  _createClass(Scope, [{
+  _createClass(Noise, [{
     key: "componentDidMount",
     value: function componentDidMount() {
+
+      var bus = parseInt(this.props.channel) + 2;
+      var freq = parseInt(this.props.freq);
+      var amFreq = parseFloat(this.props.amFreq);
+
       var s = {
-        synthDef: [{
-          id: "scopeL",
-          ugen: "flock.ugen.scope",
-          expand: 1,
-          source: {
-            id: "playerL",
-            ugen: "flock.ugen.in",
-            bus: 2,
-            expand: 1
-          },
-          options: {
-            canvas: "#waveformL",
-            styles: {
-              strokeColor: "#88f",
-              strokeWidth: 1
+        synthDef: {
+          ugen: "flock.ugen.out",
+          inputs: {
+            bus: bus,
+            expand: 1,
+            sources: {
+              id: "freq" + bus,
+              ugen: "flock.ugen.filter.biquad.bp",
+              freq: freq,
+              q: 0.5,
+              source: {
+                ugen: "flock.ugen.pinkNoise",
+                mul: {
+                  id: "amFreq" + bus,
+                  ugen: "flock.ugen.sinOsc",
+                  freq: amFreq,
+                  phase: 1
+                }
+              }
             }
           }
-        }, {
-          id: "scopeR",
-          ugen: "flock.ugen.scope",
-          expand: 1,
-          source: {
-            id: "playerR",
-            ugen: "flock.ugen.in",
-            bus: 3,
-            expand: 1
-          },
-          options: {
-            canvas: "#waveformR",
-            styles: {
-              strokeColor: "#f88",
-              strokeWidth: 1
-            }
-          }
-        }]
+        }
       };
 
-      this.scopeOut = flock.synth(s);
+      this.synth = flock.synth(s);
+    }
+  }, {
+    key: "update",
+    value: function update(field, num) {
+
+      var val = 0;
+
+      switch (field) {
+        case 'freq':
+          val = _.max([num * 10, 20]);
+          break;
+        case 'amFreq':
+          {
+            val = _.round(num * 0.01, 2);
+            break;
+          }
+      }
+
+      return val;
+    }
+  }, {
+    key: "handleRange",
+    value: function handleRange(event) {
+
+      var field = event.target.name;
+
+      var bus = parseInt(this.props.channel) + 2;
+
+      var val = this.update(field, event.target.value);
+
+      this.setState(_defineProperty({}, field, val));
+      this.synth.input(field + bus + '.freq', this.state[field]);
+      console.log('noise:', 'fq', this.state.freq, 'am', this.state.amFreq, 'range:', event.target.value);
     }
   }, {
     key: "render",
@@ -9998,16 +10030,25 @@ var Scope = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement("canvas", { id: "waveformL", height: "100", width: "250" }),
-        _react2.default.createElement("canvas", { id: "waveformR", height: "100", width: "250" })
+        _react2.default.createElement(
+          "div",
+          null,
+          "Noise [Freq: ",
+          this.state.freq,
+          ", amFreq: ",
+          this.state.amFreq,
+          "]"
+        ),
+        _react2.default.createElement("input", { type: "range", name: "freq", defaultValue: this.state.freq, onChange: this.handleRange }),
+        _react2.default.createElement("input", { type: "range", name: "amFreq", defaultValue: this.state.amFreq, onChange: this.handleRange })
       );
     }
   }]);
 
-  return Scope;
+  return Noise;
 }(_react2.default.Component);
 
-exports.default = Scope;
+exports.default = Noise;
 
 /***/ }),
 /* 89 */
@@ -10033,55 +10074,75 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } /*
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ./client/components/Synth.jsx
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   ./client/components/Scope.jsx
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                */
 
 
-var Synth = function (_React$Component) {
-  _inherits(Synth, _React$Component);
+var Scope = function (_React$Component) {
+  _inherits(Scope, _React$Component);
 
-  function Synth(props) {
-    _classCallCheck(this, Synth);
+  function Scope(props) {
+    _classCallCheck(this, Scope);
 
-    var _this = _possibleConstructorReturn(this, (Synth.__proto__ || Object.getPrototypeOf(Synth)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Scope.__proto__ || Object.getPrototypeOf(Scope)).call(this, props));
 
-    _this.state = { volume: 1 };
+    _this.state = { volume: 20 };
 
     _this.handleVolume = _this.handleVolume.bind(_this);
     return _this;
   }
 
-  _createClass(Synth, [{
+  _createClass(Scope, [{
     key: "componentDidMount",
     value: function componentDidMount() {
-
-      var bus = parseInt(this.props.channel);
-      var freq = parseInt(this.props.freq);
-
       var s = {
-        synthDef: {
-          ugen: "flock.ugen.out",
-          inputs: {
-            bus: bus + 2,
-            expand: 1,
-            sources: {
-              id: "player",
-              ugen: "flock.ugen.sinOsc",
-              freq: freq,
-              mul: 0.2,
-              phase: 1
+        synthDef: [{
+          id: "scopeL",
+          ugen: "flock.ugen.scope",
+          expand: 1,
+          source: {
+            id: "playerL",
+            ugen: "flock.ugen.in",
+            mul: 0.2,
+            bus: 2,
+            expand: 1
+          },
+          options: {
+            canvas: "#waveformL",
+            styles: {
+              strokeColor: "#88f",
+              strokeWidth: 1
             }
           }
-        }
+        }, {
+          id: "scopeR",
+          ugen: "flock.ugen.scope",
+          expand: 1,
+          source: {
+            id: "playerR",
+            ugen: "flock.ugen.in",
+            mul: 0.2,
+            bus: 3,
+            expand: 1
+          },
+          options: {
+            canvas: "#waveformR",
+            styles: {
+              strokeColor: "#f88",
+              strokeWidth: 1
+            }
+          }
+        }]
       };
 
-      this.synth = flock.synth(s);
+      this.scope = flock.synth(s);
     }
   }, {
     key: "handleVolume",
     value: function handleVolume(event) {
       this.setState({ volume: event.target.value });
-      this.synth.input('player.mul', this.state.volume * 0.01);
+      this.scope.input('playerL.mul', this.state.volume * 0.01);
+      this.scope.input('playerR.mul', this.state.volume * 0.01);
     }
   }, {
     key: "render",
@@ -10089,18 +10150,28 @@ var Synth = function (_React$Component) {
       return _react2.default.createElement(
         "div",
         null,
-        _react2.default.createElement("input", { type: "range", defaultValue: this.state.volume, onChange: this.handleVolume }),
-        _react2.default.createElement("br", null),
-        "Volume: ",
-        this.state.volume
+        _react2.default.createElement(
+          "div",
+          null,
+          "Mixer [Volume: ",
+          this.state.volume,
+          "]"
+        ),
+        _react2.default.createElement(
+          "div",
+          null,
+          _react2.default.createElement("input", { type: "range", defaultValue: this.state.volume, onChange: this.handleVolume })
+        ),
+        _react2.default.createElement("canvas", { id: "waveformL", height: "100", width: "250" }),
+        _react2.default.createElement("canvas", { id: "waveformR", height: "100", width: "250" })
       );
     }
   }]);
 
-  return Synth;
+  return Scope;
 }(_react2.default.Component);
 
-exports.default = Synth;
+exports.default = Scope;
 
 /***/ }),
 /* 90 */
