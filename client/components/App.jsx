@@ -2,8 +2,8 @@
     ./client/components/App.jsx
 */
 import React from 'react';
-import Synth from './Synth.jsx';
 import Scope from './Scope.jsx';
+import Noise from './Noise.jsx';
 
 export default class App extends React.Component {
 
@@ -35,8 +35,8 @@ export default class App extends React.Component {
       <div>
         <button name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</button>
         <br />
-        <Synth channel="0" freq="200" />
-        <Synth channel="1" freq="300" />
+        <Noise channel="0" freq="1800" amFreq="0.7" />
+        <Noise channel="1" freq="400" amFreq="0.4" />
         <Scope />
       </div>
     );
