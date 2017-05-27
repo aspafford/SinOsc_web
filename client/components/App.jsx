@@ -35,8 +35,8 @@ export default class App extends React.Component {
       <div>
         <button name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</button>
         <br />
-        <Noise channel="0" freq="1800" amFreq="0.7" />
-        <Noise channel="1" freq="400" amFreq="0.4" />
+        <Noise channel="0" freq="400" amFreq="1.0" />
+        <Noise channel="1" freq="400" amFreq="1.0" />
         <Scope />
       </div>
     );

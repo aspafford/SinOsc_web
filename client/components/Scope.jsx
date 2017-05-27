@@ -65,8 +65,8 @@ export default class Scope extends React.Component {
   render() {
     return (
       <div>
-        <input type="range" defaultValue={this.state.volume} onChange={this.handleVolume} />
-        <div>Volume: {this.state.volume}</div>
+        <div>Mixer [Volume: {this.state.volume}]</div>
+        <div><input type="range" defaultValue={this.state.volume} onChange={this.handleVolume} /></div>
         <canvas id="waveformL" height="100" width="250"></canvas>
         <canvas id="waveformR" height="100" width="250"></canvas>
       </div>
