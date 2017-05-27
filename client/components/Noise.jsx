@@ -39,10 +39,12 @@ export default class Noise extends React.Component {
             }
           }
         }
-      }
+      },
+      addToEnvironment: false
     }
 
     this.synth = flock.synth(s);
+    this.props.enviro.head(this.synth);
   }
 
   update(field, num) {

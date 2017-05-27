@@ -3,7 +3,7 @@
 */
 import React from 'react';
 import Scope from './Scope.jsx';
-import Noise from './Noise.jsx';
+import SynthGroup from './SynthGroup.jsx';
 
 export default class App extends React.Component {
 
@@ -35,8 +35,7 @@ export default class App extends React.Component {
       <div>
         <button name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</button>
         <br />
-        <Noise channel="0" freq="400" amFreq="1.0" />
-        <Noise channel="1" freq="400" amFreq="1.0" />
+        <SynthGroup enviro={this.enviro} />
         <Scope />
       </div>
     );
