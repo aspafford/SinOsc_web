@@ -5,6 +5,13 @@ import React from 'react';
 
 export default class Scope extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {volume: 20};
+
+    this.handleVolume = this.handleVolume.bind(this);
+  }
+
   componentDidMount() {
     let s = {
       synthDef: [{
@@ -14,6 +21,7 @@ export default class Scope extends React.Component {
         source: {
           id: "playerL",
           ugen: "flock.ugen.in",
+          mul: 0.2,
           bus: 2,
           expand: 1
         },
@@ -31,6 +39,7 @@ export default class Scope extends React.Component {
         source: {
           id: "playerR",
           ugen: "flock.ugen.in",
+          mul: 0.2,
           bus: 3,
           expand: 1
         },
@@ -44,12 +53,21 @@ export default class Scope extends React.Component {
       }]
     }
 
-    this.scopeOut = flock.synth(s);
+    this.scope = flock.synth(s);
+  }
+
+  handleVolume(event) {
+    this.setState({volume: event.target.value});
+    this.scope.input('playerL.mul', this.state.volume * 0.01);
+    this.scope.input('playerR.mul', this.state.volume * 0.01);
   }
 
   render() {
     return (
       <div>
+        <input type="range" defaultValue={this.state.volume} onChange={this.handleVolume} />
+        <br />
+        Volume: {this.state.volume}
         <canvas id="waveformL" height="100" width="250"></canvas>
         <canvas id="waveformR" height="100" width="250"></canvas>
       </div>
