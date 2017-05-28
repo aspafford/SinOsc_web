@@ -36,7 +36,7 @@ export default class SynthGroup extends React.Component {
     return (
       <div>
         <div>{children}</div>
-        <FloatingActionButton mini={true} style={style}>
+        <FloatingActionButton mini={true} style={style} onClick={this.handleAdd}>
           <ContentAdd />
         </FloatingActionButton>
 
