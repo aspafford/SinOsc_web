@@ -2,6 +2,8 @@
     ./client/components/SynthGroup.jsx
 */
 import React from 'react';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import Noise from './Noise.jsx';
 
 export default class SynthGroup extends React.Component {
@@ -20,6 +22,10 @@ export default class SynthGroup extends React.Component {
 
   render() {
 
+    const style = {
+      marginRight: 20,
+    };
+
     const children = [];
 
     for (let i = 0; i < this.state.numChildren; i++) {
@@ -30,7 +36,10 @@ export default class SynthGroup extends React.Component {
     return (
       <div>
         <div>{children}</div>
-        <div><button onClick={this.handleAdd}>Add +</button></div>
+        <FloatingActionButton mini={true} style={style}>
+          <ContentAdd />
+        </FloatingActionButton>
+
         <div>Synth count: {this.state.numChildren}</div>
       </div>
     );

@@ -2,8 +2,14 @@
     ./client/components/App.jsx
 */
 import React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
 import Scope from './Scope.jsx';
 import SynthGroup from './SynthGroup.jsx';
+
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+injectTapEventPlugin();
 
 export default class App extends React.Component {
 
@@ -32,12 +38,13 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <button name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</button>
-        <br />
-        <SynthGroup enviro={this.enviro} />
-        <Scope />
-      </div>
+      <MuiThemeProvider>
+        <div>
+          <RaisedButton name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</RaisedButton>
+          <SynthGroup enviro={this.enviro} />
+          <Scope />
+        </div>
+      </MuiThemeProvider>
     );
   }
 }
