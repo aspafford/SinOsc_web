@@ -7,7 +7,8 @@ var format = require('util').format;
 var dbResult;
 
 // MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, db) {
-MongoClient.connect('mongodb://sinosc:5e53ef28a3b1ccb4f327d2b25c5e0388@dokku-mongo-sinosc:27017/sinosc', function (err, db) {
+// MongoClient.connect('mongodb://sinosc:5e53ef28a3b1ccb4f327d2b25c5e0388@dokku-mongo-sinosc:27017/sinosc', function (err, db) {
+MongoClient.connect(process.env.MONGO_URL, function (err, db) {
 
     if (err) throw err;
 
