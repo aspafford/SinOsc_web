@@ -2,6 +2,7 @@
     ./client/components/App.jsx
 */
 import React from 'react';
+import Settings from './Settings.jsx';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Scope from './Scope.jsx';
@@ -37,13 +38,16 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
-        <div>
-          <RaisedButton name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</RaisedButton>
-          <SynthGroup enviro={this.enviro} />
-          <Scope />
-        </div>
-      </MuiThemeProvider>
+      <div>
+        <Settings />
+        <MuiThemeProvider>
+          <div>
+            <RaisedButton name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</RaisedButton>
+            <SynthGroup enviro={this.enviro} />
+            <Scope />
+          </div>
+        </MuiThemeProvider>
+      </div>
     );
   }
 }
