@@ -30,7 +30,6 @@ export default class App extends React.Component {
     } else {
       this.enviro.stop();
     }
-    console.log('this.state.playing', this.state.playing);
     this.setState(prevState => ({
       playing: !prevState.playing
     }))

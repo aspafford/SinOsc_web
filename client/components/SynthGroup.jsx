@@ -23,7 +23,6 @@ export default class SynthGroup extends React.Component {
   render() {
 
     const style = {
-      marginRight: 20,
     };
 
     const children = [];
@@ -39,8 +38,6 @@ export default class SynthGroup extends React.Component {
         <FloatingActionButton mini={true} style={style} onClick={this.handleAdd}>
           <ContentAdd />
         </FloatingActionButton>
-
-        <div>Synth count: {this.state.numChildren}</div>
       </div>
     );
   }
