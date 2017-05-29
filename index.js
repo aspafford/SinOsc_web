@@ -5,7 +5,7 @@ var format = require('util').format;
 
 var dbResult;
 
-MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, db) {
+MongoClient.connect('mongodb://172.17.0.11:27017/test', function (err, db) {
 
     if (err) throw err;
 
