@@ -1,14 +1,19 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 
 var MongoClient = require('mongodb').MongoClient;
 
 var format = require('util').format;
 
-var dbResult;
+var app = express();
 
-// MongoClient.connect('mongodb://127.0.0.1:27017/test', function (err, db) {
-// MongoClient.connect('mongodb://sinosc:5e53ef28a3b1ccb4f327d2b25c5e0388@dokku-mongo-sinosc:27017/sinosc', function (err, db) {
-MongoClient.connect(process.env.MONGO_URL, function (err, db) {
+app.set('port', (process.env.PORT || 5000))
+app.use(express.static(__dirname + '/dist'));
+
+var dbResult;
+var mongoUrl = (process.env.MONGO_URL || 'mongodb://127.0.0.1:27017/test');
+
+MongoClient.connect(mongoUrl, function (err, db) {
 
     if (err) throw err;
 
@@ -22,23 +27,38 @@ MongoClient.connect(process.env.MONGO_URL, function (err, db) {
 
     // Locate all the entries using find
     collection.find().toArray(function(err, results) {
-
-        // console.dir(results);
         dbResult = results;
         // Let's close the db
         db.close();
     });
 });
 
+var dbConn = function(cb) {
+  MongoClient.connect(mongoUrl, function (err, db) {
+    if (err) throw err;
+    cb(db, function() { db.close() });
+  });
+}
 
-var app = express();
-
-app.set('port', (process.env.PORT || 5000))
-
-app.use(express.static(__dirname + '/dist'));
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
 app.get('/settings', function (req, res, next) {
   var msg = dbResult[0]._id;
+  res.send(msg);
+})
+
+app.post('/settings', function (req, res) {
+  dbConn(function(db) {
+    var collection = db.collection('settings');
+    collection.update({}, req.body, {upsert: true}, function(err, docs) {
+      if (err) throw err;
+    });
+  })
+  console.log('req>', req.body);
+  var msg = 'ok+';
   res.send(msg);
 })
 

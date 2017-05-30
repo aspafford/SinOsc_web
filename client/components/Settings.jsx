@@ -23,10 +23,19 @@ export default class Settings extends React.Component {
       });
   }
 
+  handleClick() {
+    axios
+      .post("/settings", {count: 2})
+      .then(function(result) {
+        console.log('ok', result);
+      });
+  }
+
   render() {
     return (
         <div>
           {this.state.message}
+          <div onClick={this.handleClick}>Post</div>
         </div>
     );
   }
