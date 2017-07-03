@@ -39,9 +39,9 @@ export default class App extends React.Component {
     return (
       <MuiThemeProvider>
         <div>
-          <RaisedButton name="button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</RaisedButton>
-          <SynthGroup enviro={this.enviro} />
+          <RaisedButton name="button" className="play-button" onClick={this.togglePlay}>{this.state.playing ? 'Pause' : 'Play'}</RaisedButton>
           <Scope />
+          <SynthGroup enviro={this.enviro} />
         </div>
       </MuiThemeProvider>
     );
