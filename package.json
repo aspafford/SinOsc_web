@@ -15,9 +15,12 @@
     "express": "^4.15.3",
     "material-ui": "^0.18.1",
     "mongodb": "^2.2.27",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-tap-event-plugin": "^2.0.1"
+    "react-redux": "^5.0.5",
+    "react-tap-event-plugin": "^2.0.1",
+    "redux": "^3.7.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -28,6 +31,7 @@
     "html-webpack-plugin": "^2.28.0",
     "node-sass": "^4.5.3",
     "path": "^0.12.7",
+    "redux-devtools": "^3.4.0",
     "sass-loader": "^6.0.5",
     "style-loader": "^0.18.1",
     "uglify-js": "^2.8.23",

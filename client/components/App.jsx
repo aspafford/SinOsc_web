@@ -2,6 +2,13 @@
     ./client/components/App.jsx
 */
 import React from 'react';
+
+import { createStore } from 'redux'
+import { connect } from 'react-redux'
+
+import CounterButton from './Counter'
+import counter from '../reducers'
+
 import Settings from './Settings.jsx';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,6 +18,8 @@ import SynthGroup from './SynthGroup.jsx';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 injectTapEventPlugin();
+
+const store = createStore(counter)
 
 export default class App extends React.Component {
 
@@ -39,6 +48,11 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
+        <CounterButton
+          value={store.getState()}
+          onIncrement={() => store.dispatch({ type: 'INCREMENT' })}
+          onDecrement={() => store.dispatch({ type: 'DECREMENT' })}
+        />
         <Settings />
         <MuiThemeProvider>
           <div>
