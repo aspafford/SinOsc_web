@@ -3,3 +3,9 @@ export const incrementCount = () => {
     type: 'INCREMENT'
   }
 }
+
+export const decrementCount = () => {
+  return {
+    type: 'DECREMENT'
+  }
+}
