@@ -20,3 +20,9 @@ export const toggleTodo = id => {
     id
   }
 }
+
+export const incrementCount = () => {
+  return {
+    type: 'INCREMENT'
+  }
+}
