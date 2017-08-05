@@ -36,7 +36,7 @@ MongoClient.connect(mongoUrl, function (err, db) {
 var dbConn = function(cb) {
   MongoClient.connect(mongoUrl, function (err, db) {
     if (err) throw err;
-    cb(db, function() { db.close() });
+    cb(db);
   });
 }
 
@@ -46,8 +46,14 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 app.get('/settings', function (req, res, next) {
-  var msg = dbResult[0]._id;
-  res.send(msg);
+  dbConn(function(db) {
+      var collection = db.collection('settings');
+      collection.find().toArray(function(err, results) {
+        let data = results[0].count;
+        res.send(data);
+        db.close();
+      });
+  })
 })
 
 app.post('/settings', function (req, res) {
@@ -57,7 +63,6 @@ app.post('/settings', function (req, res) {
       if (err) throw err;
     });
   })
-  console.log('req>', req.body);
   var msg = 'ok+';
   res.send(msg);
 })

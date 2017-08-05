@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import { incrementCount } from '../actions'
+import { incrementCountAsync } from '../actions'
 import Counter from '../components/Counter'
 
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onClick: () => {
-      dispatch(incrementCount())
+      dispatch(incrementCountAsync())
     }
   }
 }
